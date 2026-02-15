@@ -3,1332 +3,277 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>PropSmart</title>
+  <meta name="description" content="Free property investment analyzer. Calculate ROI, renovation costs, EMI and TRUE profitability of any property in India.">
+  <meta name="keywords" content="property ROI calculator, renovation cost estimator, real estate investment India, true ROI, EMI calculator">
+  <meta property="og:title" content="PropSmart — Smart Property Analysis">
+  <meta property="og:description" content="Analyze ROI, renovation costs, and true profit of any property in 60 seconds. Free forever.">
+  <title>PropSmart — Smart Property Analysis</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #F5F5F7;
-      --card: #FFFFFF;
-      --card-border: #E8E8ED;
-      --text: #1C1C1E;
-      --text2: #636366;
-      --text3: #AEAEB2;
-      --accent: #5856D6;
-      --accent-light: #EEEDFA;
-      --accent2: #34C759;
-      --accent2-light: #EAF9EE;
-      --success: #34C759;
-      --success-light: #EAF9EE;
-      --warning: #FF9F0A;
-      --warning-light: #FFF4E0;
-      --danger: #FF3B30;
-      --danger-light: #FFEDEC;
-      --blue: #007AFF;
-      --blue-light: #E5F1FF;
-      --purple: #AF52DE;
-      --purple-light: #F5EAFA;
-      --teal: #5AC8FA;
-      --teal-light: #E8F7FE;
-      --orange: #FF9500;
-      --orange-light: #FFF3E0;
-      --nav-bg: #FFFFFF;
-      --input-bg: #F9F9FB;
-      --shadow: 0 1px 3px rgba(0,0,0,0.04);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
-    }
-
-    .dark {
-      --bg: #000000;
-      --card: #1C1C1E;
-      --card-border: #2C2C2E;
-      --text: #F2F2F7;
-      --text2: #AEAEB2;
-      --text3: #636366;
-      --nav-bg: #1C1C1E;
-      --input-bg: #2C2C2E;
-      --accent-light: #2A2840;
-      --accent2-light: #1A3320;
-      --success-light: #1A3320;
-      --warning-light: #332B1A;
-      --danger-light: #331A19;
-      --blue-light: #1A2733;
-      --purple-light: #2A1A33;
-      --teal-light: #1A2B33;
-      --orange-light: #332B1A;
-      --shadow: 0 1px 3px rgba(0,0,0,0.3);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-user-select: none;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout: none;
-    }
-
-    input, textarea {
-      -webkit-user-select: text;
-      user-select: text;
-    }
-
-    body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      max-width: 480px;
-      margin: 0 auto;
-      padding-bottom: 84px;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    ::-webkit-scrollbar { display: none; }
-
-    /* ===== ANIMATIONS ===== */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-    }
-
-    .animate-fade-up {
-      animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .animate-scale-in {
-      animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .animate-slide-up {
-      animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .stagger-1 { animation-delay: 0.05s; opacity: 0; }
-    .stagger-2 { animation-delay: 0.1s; opacity: 0; }
-    .stagger-3 { animation-delay: 0.15s; opacity: 0; }
-    .stagger-4 { animation-delay: 0.2s; opacity: 0; }
-    .stagger-5 { animation-delay: 0.25s; opacity: 0; }
-
-    /* ===== LOGIN ===== */
-    .login-wrapper {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 24px;
-      background: var(--card);
-      transition: background 0.3s;
-    }
-
-    .login-brand {
-      text-align: center;
-      margin-bottom: 44px;
-      animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .login-brand .brand-icon {
-      width: 68px;
-      height: 68px;
-      background: var(--accent-light);
-      border-radius: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 18px;
-      transition: background 0.3s;
-    }
-
-    .login-brand .brand-icon svg {
-      width: 34px;
-      height: 34px;
-      stroke: var(--accent);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .login-brand h1 {
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: -0.8px;
-      margin-bottom: 8px;
-    }
-
-    .login-brand h1 span { color: var(--accent); }
-
-    .login-brand p {
-      font-size: 15px;
-      color: var(--text2);
-      line-height: 1.5;
-    }
-
-    .login-form-container {
-      width: 100%;
-      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-      opacity: 0;
-    }
-
-    .login-form-container h3 {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .login-form-container .login-subtitle {
-      font-size: 14px;
-      color: var(--text2);
-      margin-bottom: 28px;
-    }
-
-    .login-error-message {
-      background: var(--danger-light);
-      color: var(--danger);
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      display: none;
-      animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .login-field {
-      margin-bottom: 18px;
-    }
-
-    .login-field label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 7px;
-      transition: color 0.3s;
-    }
-
-    .login-field input {
-      width: 100%;
-      padding: 15px 16px;
-      border: 1.5px solid var(--card-border);
-      border-radius: 14px;
-      font-size: 16px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--input-bg);
-      color: var(--text);
-      outline: none;
-      transition: all 0.25s;
-    }
-
-    .login-field input:focus {
-      border-color: var(--accent);
-      background: var(--card);
-      box-shadow: 0 0 0 4px rgba(88, 86, 214, 0.1);
-    }
-
-    .login-field input::placeholder { color: var(--text3); }
-
-    .login-continue-button {
-      width: 100%;
-      padding: 16px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 14px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      margin-top: 4px;
-      transition: all 0.2s;
-    }
-
-    .login-continue-button:active {
-      transform: scale(0.98);
-      opacity: 0.9;
-    }
-
-    .login-terms {
-      text-align: center;
-      margin-top: 32px;
-      font-size: 12px;
-      color: var(--text3);
-      line-height: 1.6;
-    }
-
-    /* ===== NAVBAR ===== */
-    .top-navbar {
-      background: var(--nav-bg);
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      border-bottom: 1px solid var(--card-border);
-      transition: background 0.3s, border-color 0.3s;
-    }
-
-    .top-navbar-logo h1 {
-      font-size: 21px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-
-    .top-navbar-logo h1 span { color: var(--accent); }
-
-    .top-navbar-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .navbar-icon-button {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg);
-      border: 1px solid var(--card-border);
-      cursor: pointer;
-      position: relative;
-      transition: all 0.2s;
-    }
-
-    .navbar-icon-button:active { transform: scale(0.92); }
-
-    .navbar-icon-button svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--text);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: stroke 0.3s;
-    }
-
-    .notification-badge {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 16px;
-      height: 16px;
-      background: var(--danger);
-      border-radius: 50%;
-      border: 2px solid var(--nav-bg);
-      font-size: 9px;
-      font-weight: 700;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.3s;
-    }
-
-    .navbar-user-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 16px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .navbar-user-avatar:active { transform: scale(0.92); }
-
-    /* ===== HERO ===== */
-    .hero-section {
-      margin: 16px;
-      background: linear-gradient(135deg, var(--accent), #7C7AFF);
-      border-radius: 20px;
-      padding: 28px 24px;
-      color: white;
-      animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-section::after {
-      content: '';
-      position: absolute;
-      top: -40px;
-      right: -40px;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-    }
-
-    .hero-section::before {
-      content: '';
-      position: absolute;
-      bottom: -30px;
-      left: -20px;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-    }
-
-    .hero-section h2 {
-      font-size: 23px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      letter-spacing: -0.3px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-section p {
-      font-size: 14px;
-      opacity: 0.88;
-      margin-bottom: 22px;
-      line-height: 1.6;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-cta-button {
-      background: white;
-      color: var(--accent);
-      border: none;
-      padding: 12px 28px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      position: relative;
-      z-index: 1;
-      transition: transform 0.2s;
-    }
-
-    .hero-cta-button:active { transform: scale(0.96); }
-
-    /* ===== SECTIONS ===== */
-    .section-heading {
-      padding: 28px 20px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .section-heading h3 {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.2px;
-    }
-
-    .status-pill {
-      background: var(--accent);
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 20px;
-    }
-
-    .content-card {
-      margin: 0 16px;
-      background: var(--card);
-      border-radius: 18px;
-      padding: 20px;
-      border: 1px solid var(--card-border);
-      box-shadow: var(--shadow);
-      transition: all 0.3s;
-    }
-
-    .tools-icon-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      text-align: center;
-    }
-
-    .tool-grid-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      padding: 14px 4px;
-      border-radius: 16px;
-      transition: all 0.2s;
-    }
-
-    .tool-grid-item:active {
-      transform: scale(0.94);
-      background: var(--bg);
-    }
-
-    .tool-icon-circle {
-      width: 50px;
-      height: 50px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s;
-    }
-
-    .tool-icon-circle svg {
-      width: 24px;
-      height: 24px;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-    }
-
-    .tool-icon-circle.accent-bg { background: var(--accent-light); }
-    .tool-icon-circle.accent-bg svg { stroke: var(--accent); }
-    .tool-icon-circle.purple-bg { background: var(--purple-light); }
-    .tool-icon-circle.purple-bg svg { stroke: var(--purple); }
-    .tool-icon-circle.blue-bg { background: var(--blue-light); }
-    .tool-icon-circle.blue-bg svg { stroke: var(--blue); }
-    .tool-icon-circle.orange-bg { background: var(--orange-light); }
-    .tool-icon-circle.orange-bg svg { stroke: var(--orange); }
-
-    .tool-grid-item span {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text2);
-      line-height: 1.3;
-      transition: color 0.3s;
-    }
-
-    .dual-card-row {
-      margin: 16px;
-      display: flex;
-      gap: 12px;
-    }
-
-    .mini-info-card {
-      flex: 1;
-      background: var(--card);
-      border-radius: 16px;
-      padding: 18px;
-      border: 1px solid var(--card-border);
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      transition: all 0.2s;
-    }
-
-    .mini-info-card:active { transform: scale(0.97); }
-
-    .mini-info-card h4 {
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 3px;
-    }
-
-    .mini-info-card p {
-      font-size: 12px;
-      color: var(--text2);
-    }
-
-    .promo-banner {
-      margin: 16px;
-      background: linear-gradient(135deg, #1C1C1E, #3A3A3C);
-      border-radius: 20px;
-      padding: 26px 24px;
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .dark .promo-banner {
-      background: linear-gradient(135deg, var(--accent), #7C7AFF);
-    }
-
-    .promo-banner::after {
-      content: '';
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.04);
-    }
-
-    .promo-banner h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      position: relative;
-    }
-
-    .promo-banner p {
-      font-size: 13px;
-      opacity: 0.8;
-      margin-bottom: 20px;
-      line-height: 1.6;
-      position: relative;
-    }
-
-    .promo-cta-button {
-      background: white;
-      color: #1C1C1E;
-      border: none;
-      padding: 12px 26px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      position: relative;
-      transition: transform 0.2s;
-    }
-
-    .promo-cta-button:active { transform: scale(0.96); }
-
-    .tip-info-box {
-      margin: 16px;
-      background: var(--warning-light);
-      border: 1px solid rgba(255, 159, 10, 0.2);
-      border-radius: 16px;
-      padding: 18px 20px;
-      font-size: 13px;
-      color: var(--text);
-      line-height: 1.7;
-      transition: all 0.3s;
-    }
-
-    .tip-info-box strong { color: var(--orange); }
-
-    /* ===== PAGE LAYOUT ===== */
-    .page-content-section { padding: 16px; }
-
-    .page-top-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-
-    .back-circle-button {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 1px solid var(--card-border);
-      background: var(--card);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .back-circle-button:active { transform: scale(0.9); }
-
-    .back-circle-button svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--text);
-      fill: none;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: stroke 0.3s;
-    }
-
-    .page-top-bar h2 {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-    }
-
-    .form-container {
-      background: var(--card);
-      border-radius: 20px;
-      padding: 26px;
-      border: 1px solid var(--card-border);
-      box-shadow: var(--shadow);
-      transition: all 0.3s;
-    }
-
-    .form-container h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 22px;
-      letter-spacing: -0.2px;
-    }
-
-    .form-field {
-      margin-bottom: 18px;
-    }
-
-    .form-field label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 7px;
-      transition: color 0.3s;
-    }
-
-    .form-field input {
-      width: 100%;
-      padding: 15px 16px;
-      border: 1.5px solid var(--card-border);
-      border-radius: 14px;
-      font-size: 15px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--input-bg);
-      color: var(--text);
-      outline: none;
-      transition: all 0.25s;
-    }
-
-    .form-field input:focus {
-      border-color: var(--accent);
-      background: var(--card);
-      box-shadow: 0 0 0 4px rgba(88, 86, 214, 0.1);
-    }
-
-    .form-field input::placeholder { color: var(--text3); }
-
-    /* ===== CUSTOM SELECT ===== */
-    .custom-select-wrapper { position: relative; width: 100%; }
-
-    .select-trigger {
-      width: 100%;
-      padding: 15px 16px;
-      border: 1.5px solid var(--card-border);
-      border-radius: 14px;
-      font-size: 15px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--input-bg);
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.25s;
-    }
-
-    .select-trigger.open {
-      border-color: var(--accent);
-      background: var(--card);
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-      box-shadow: 0 0 0 4px rgba(88, 86, 214, 0.1);
-    }
-
-    .select-trigger .select-arrow { transition: transform 0.25s; }
-    .select-trigger.open .select-arrow { transform: rotate(180deg); }
-
-    .select-dropdown {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: var(--card);
-      border: 1.5px solid var(--accent);
-      border-top: none;
-      border-bottom-left-radius: 14px;
-      border-bottom-right-radius: 14px;
-      z-index: 50;
-      overflow: hidden;
-      animation: fadeIn 0.2s;
-      transition: background 0.3s;
-    }
-
-    .select-dropdown.visible { display: block; }
-
-    .select-dropdown-option {
-      padding: 15px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      border-bottom: 1px solid var(--card-border);
-      transition: background 0.15s;
-      color: var(--text);
-    }
-
-    .select-dropdown-option:last-child { border-bottom: none; }
-
-    .select-dropdown-option:active,
-    .select-dropdown-option.active {
-      background: var(--accent-light);
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    /* ===== BUTTONS ===== */
-    .primary-action-button {
-      width: 100%;
-      padding: 16px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 14px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      margin-top: 10px;
-      transition: all 0.2s;
-    }
-
-    .primary-action-button:active {
-      transform: scale(0.98);
-      opacity: 0.9;
-    }
-
-    .primary-action-button.green-variant { background: var(--success); }
-    .primary-action-button.dark-variant { background: #1C1C1E; }
-    .dark .primary-action-button.dark-variant { background: var(--accent); }
-
-    /* ===== CHECKBOXES ===== */
-    .checkbox-grid-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .checkbox-card {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 15px;
-      background: var(--input-bg);
-      border-radius: 14px;
-      border: 1.5px solid var(--card-border);
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.2s;
-      color: var(--text);
-    }
-
-    .checkbox-card:active { transform: scale(0.97); }
-
-    .checkbox-card.selected {
-      border-color: var(--accent);
-      background: var(--accent-light);
-    }
-
-    .checkbox-indicator {
-      width: 22px;
-      height: 22px;
-      border-radius: 7px;
-      border: 2px solid var(--text3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.2s;
-    }
-
-    .checkbox-card.selected .checkbox-indicator {
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-
-    .checkbox-indicator svg {
-      width: 14px;
-      height: 14px;
-      stroke: white;
-      fill: none;
-      stroke-width: 3;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .checkbox-card.selected .checkbox-indicator svg { opacity: 1; }
-
-    /* ===== RESULTS ===== */
-    .results-container {
-      background: var(--card);
-      border-radius: 20px;
-      padding: 26px;
-      border: 1px solid var(--card-border);
-      margin-top: 18px;
-      display: none;
-      box-shadow: var(--shadow);
-      transition: all 0.3s;
-    }
-
-    .results-container h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 18px;
-      letter-spacing: -0.2px;
-    }
-
-    .verdict-display {
-      text-align: center;
-      padding: 22px;
-      border-radius: 16px;
-      margin-bottom: 22px;
-    }
-
-    .verdict-display.positive { background: var(--success-light); }
-    .verdict-display.neutral { background: var(--warning-light); }
-    .verdict-display.negative { background: var(--danger-light); }
-
-    .verdict-display .verdict-label {
-      font-size: 17px;
-      font-weight: 700;
-    }
-
-    .verdict-display.positive .verdict-label { color: var(--success); }
-    .verdict-display.neutral .verdict-label { color: var(--warning); }
-    .verdict-display.negative .verdict-label { color: var(--danger); }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .metric-card {
-      padding: 16px;
-      border-radius: 14px;
-      text-align: center;
-      transition: background 0.3s;
-    }
-
-    .metric-card .metric-label {
-      font-size: 11px;
-      color: var(--text2);
-      font-weight: 600;
-      margin-bottom: 5px;
-      letter-spacing: 0.2px;
-      text-transform: uppercase;
-    }
-
-    .metric-card .metric-value {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-    }
-
-    .metric-card.green-metric { background: var(--success-light); }
-    .metric-card.green-metric .metric-value { color: var(--success); }
-    .metric-card.blue-metric { background: var(--blue-light); }
-    .metric-card.blue-metric .metric-value { color: var(--blue); }
-    .metric-card.purple-metric { background: var(--purple-light); }
-    .metric-card.purple-metric .metric-value { color: var(--purple); }
-    .metric-card.orange-metric { background: var(--orange-light); }
-    .metric-card.orange-metric .metric-value { color: var(--orange); }
-    .metric-card.red-metric { background: var(--danger-light); }
-    .metric-card.red-metric .metric-value { color: var(--danger); }
-    .metric-card.teal-metric { background: var(--teal-light); }
-    .metric-card.teal-metric .metric-value { color: #0097A7; }
-    .metric-card.full-width { grid-column: span 2; }
-
-    .summary-text-box {
-      margin-top: 18px;
-      padding: 18px;
-      background: var(--bg);
-      border-radius: 14px;
-      font-size: 13px;
-      color: var(--text2);
-      line-height: 1.8;
-      transition: background 0.3s;
-    }
-
-    .summary-text-box strong { color: var(--text); }
-
-    .breakdown-line-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--card-border);
-      font-size: 14px;
-      transition: border-color 0.3s;
-    }
-
-    .breakdown-line-item:last-child { border-bottom: none; }
-    .breakdown-line-item .item-value { font-weight: 700; }
-
-    .breakdown-total-bar {
-      display: flex;
-      justify-content: space-between;
-      padding: 15px 18px;
-      background: var(--accent);
-      color: white;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 15px;
-      margin-top: 12px;
-    }
-
-    /* ===== COMING SOON ===== */
-    .coming-soon-block {
-      text-align: center;
-      padding: 56px 24px;
-    }
-
-    .coming-soon-block .coming-soon-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin: 0 auto 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .coming-soon-block .coming-soon-icon svg {
-      width: 38px;
-      height: 38px;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-    }
-
-    .coming-soon-block h2 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      letter-spacing: -0.3px;
-    }
-
-    .coming-soon-block p {
-      font-size: 14px;
-      color: var(--text2);
-      line-height: 1.6;
-      margin-bottom: 24px;
-    }
-
-    /* ===== PROFILE ===== */
-    .profile-header-section {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
-    .profile-avatar-large {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 26px;
-      font-weight: 700;
-    }
-
-    .profile-details h2 {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .profile-details p {
-      font-size: 13px;
-      color: var(--text2);
-    }
-
-    .settings-list-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 17px 0;
-      border-bottom: 1px solid var(--card-border);
-      font-size: 15px;
-      cursor: pointer;
-      transition: border-color 0.3s;
-    }
-
-    .settings-list-item:last-child { border-bottom: none; }
-
-    .settings-list-item:active { opacity: 0.7; }
-
-    .settings-list-item .settings-arrow {
-      color: var(--text3);
-      font-size: 18px;
-    }
-
-    .dark-mode-toggle-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 17px 0;
-      border-bottom: 1px solid var(--card-border);
-      font-size: 15px;
-      transition: border-color 0.3s;
-    }
-
-    .toggle-switch {
-      width: 50px;
-      height: 30px;
-      background: var(--text3);
-      border-radius: 15px;
-      position: relative;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .toggle-switch.active { background: var(--accent); }
-
-    .toggle-switch::after {
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 24px;
-      height: 24px;
-      background: white;
-      border-radius: 50%;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-    }
-
-    .toggle-switch.active::after { transform: translateX(20px); }
-
-    .logout-action-button {
-      width: 100%;
-      padding: 15px;
-      border: 1.5px solid var(--danger);
-      background: transparent;
-      color: var(--danger);
-      border-radius: 14px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      margin-top: 24px;
-      transition: all 0.2s;
-    }
-
-    .logout-action-button:active {
-      background: var(--danger-light);
-      transform: scale(0.98);
-    }
-
-    /* ===== BOTTOM NAV ===== */
-    .bottom-navigation {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 480px;
-      background: var(--nav-bg);
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 0 18px;
-      border-top: 1px solid var(--card-border);
-      z-index: 100;
-      transition: all 0.3s;
-    }
-
-    .bottom-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      cursor: pointer;
-      border: none;
-      background: none;
-      padding: 6px 14px;
-      position: relative;
-      transition: transform 0.2s;
-    }
-
-    .bottom-nav-item:active { transform: scale(0.88); }
-
-    .bottom-nav-item svg {
-      width: 24px;
-      height: 24px;
-      stroke: var(--text3);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: stroke 0.3s;
-    }
-
-    .bottom-nav-item span {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--text3);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: color 0.3s;
-    }
-
-    .bottom-nav-item.active-tab svg { stroke: var(--accent); }
-    .bottom-nav-item.active-tab span { color: var(--accent); }
-
-    .bottom-nav-item.active-tab::before {
-      content: '';
-      position: absolute;
-      top: -1px;
-      width: 22px;
-      height: 3px;
-      background: var(--accent);
-      border-radius: 0 0 4px 4px;
-    }
-
-    .page { display: none; }
-    .page.active { display: block; }
-    .app-main-wrapper { display: none; }
+    :root{--bg:#F5F5F7;--card:#FFFFFF;--card-border:#E8E8ED;--text:#1C1C1E;--text2:#636366;--text3:#AEAEB2;--accent:#5856D6;--accent-light:#EEEDFA;--success:#34C759;--success-light:#EAF9EE;--warning:#FF9F0A;--warning-light:#FFF4E0;--danger:#FF3B30;--danger-light:#FFEDEC;--blue:#007AFF;--blue-light:#E5F1FF;--purple:#AF52DE;--purple-light:#F5EAFA;--teal:#5AC8FA;--teal-light:#E8F7FE;--orange:#FF9500;--orange-light:#FFF3E0;--nav-bg:#FFFFFF;--input-bg:#F9F9FB;--shadow:0 1px 3px rgba(0,0,0,0.04);--shadow-md:0 4px 16px rgba(0,0,0,0.06);}
+    .dark{--bg:#000000;--card:#1C1C1E;--card-border:#2C2C2E;--text:#F2F2F7;--text2:#AEAEB2;--text3:#636366;--nav-bg:#1C1C1E;--input-bg:#2C2C2E;--accent-light:#2A2840;--success-light:#1A3320;--warning-light:#332B1A;--danger-light:#331A19;--blue-light:#1A2733;--purple-light:#2A1A33;--teal-light:#1A2B33;--orange-light:#332B1A;--shadow:0 1px 3px rgba(0,0,0,0.3);--shadow-md:0 4px 16px rgba(0,0,0,0.4);}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;}
+    input,textarea{-webkit-user-select:text;user-select:text;}
+    body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);max-width:480px;margin:0 auto;padding-bottom:84px;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background 0.3s,color 0.3s;}
+    ::-webkit-scrollbar{display:none;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    @keyframes scaleIn{from{opacity:0;transform:scale(0.95);}to{opacity:1;transform:scale(1);}}
+    @keyframes slideUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+    .animate-fade-up{animation:fadeUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards;}
+    .animate-scale-in{animation:scaleIn 0.35s cubic-bezier(0.16,1,0.3,1) forwards;}
+    .animate-slide-up{animation:slideUp 0.45s cubic-bezier(0.16,1,0.3,1) forwards;}
+    .stagger-1{animation-delay:0.05s;opacity:0;}.stagger-2{animation-delay:0.1s;opacity:0;}.stagger-3{animation-delay:0.15s;opacity:0;}.stagger-4{animation-delay:0.2s;opacity:0;}.stagger-5{animation-delay:0.25s;opacity:0;}
+
+    .login-wrapper{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;background:var(--card);transition:background 0.3s;}
+    .login-brand{text-align:center;margin-bottom:44px;animation:fadeUp 0.5s cubic-bezier(0.16,1,0.3,1);}
+    .login-brand .brand-icon{width:68px;height:68px;background:var(--accent-light);border-radius:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;transition:background 0.3s;}
+    .login-brand .brand-icon svg{width:34px;height:34px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+    .login-brand h1{font-size:30px;font-weight:800;letter-spacing:-0.8px;margin-bottom:8px;}
+    .login-brand h1 span{color:var(--accent);}
+    .login-brand p{font-size:15px;color:var(--text2);line-height:1.5;}
+    .login-form-container{width:100%;animation:fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;opacity:0;}
+    .login-form-container h3{font-size:20px;font-weight:700;margin-bottom:4px;}
+    .login-form-container .login-subtitle{font-size:14px;color:var(--text2);margin-bottom:28px;}
+    .login-error-message{background:var(--danger-light);color:var(--danger);padding:12px 16px;border-radius:12px;font-size:13px;font-weight:600;margin-bottom:16px;display:none;animation:scaleIn 0.3s cubic-bezier(0.16,1,0.3,1);}
+    .login-field{margin-bottom:18px;}
+    .login-field label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:7px;transition:color 0.3s;}
+    .login-field input{width:100%;padding:15px 16px;border:1.5px solid var(--card-border);border-radius:14px;font-size:16px;font-family:'Plus Jakarta Sans',sans-serif;background:var(--input-bg);color:var(--text);outline:none;transition:all 0.25s;}
+    .login-field input:focus{border-color:var(--accent);background:var(--card);box-shadow:0 0 0 4px rgba(88,86,214,0.1);}
+    .login-field input::placeholder{color:var(--text3);}
+    .login-continue-button{width:100%;padding:16px;background:var(--accent);color:white;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;margin-top:4px;transition:all 0.2s;}
+    .login-continue-button:active{transform:scale(0.98);opacity:0.9;}
+    .login-terms{text-align:center;margin-top:32px;font-size:12px;color:var(--text3);line-height:1.6;}
+
+    .top-navbar{background:var(--nav-bg);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--card-border);transition:background 0.3s,border-color 0.3s;}
+    .top-navbar-logo h1{font-size:21px;font-weight:800;letter-spacing:-0.5px;}
+    .top-navbar-logo h1 span{color:var(--accent);}
+    .top-navbar-actions{display:flex;gap:10px;align-items:center;}
+    .navbar-icon-button{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg);border:1px solid var(--card-border);cursor:pointer;position:relative;transition:all 0.2s;}
+    .navbar-icon-button:active{transform:scale(0.92);}
+    .navbar-icon-button svg{width:20px;height:20px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke 0.3s;}
+    .notification-badge{position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:var(--danger);border-radius:50%;border:2px solid var(--nav-bg);font-size:9px;font-weight:700;color:white;display:flex;align-items:center;justify-content:center;transition:border-color 0.3s;}
+    .navbar-user-avatar{width:38px;height:38px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;cursor:pointer;transition:transform 0.2s;}
+    .navbar-user-avatar:active{transform:scale(0.92);}
+
+    .hero-section{margin:16px;background:linear-gradient(135deg,var(--accent),#7C7AFF);border-radius:20px;padding:28px 24px;color:white;animation:fadeUp 0.5s cubic-bezier(0.16,1,0.3,1);position:relative;overflow:hidden;}
+    .hero-section::after{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.08);}
+    .hero-section::before{content:'';position:absolute;bottom:-30px;left:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.06);}
+    .hero-section h2{font-size:23px;font-weight:800;margin-bottom:8px;letter-spacing:-0.3px;position:relative;z-index:1;}
+    .hero-section p{font-size:14px;opacity:0.88;margin-bottom:22px;line-height:1.6;position:relative;z-index:1;}
+    .hero-cta-button{background:white;color:var(--accent);border:none;padding:12px 28px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;position:relative;z-index:1;transition:transform 0.2s;}
+    .hero-cta-button:active{transform:scale(0.96);}
+
+    .section-heading{padding:28px 20px 14px;display:flex;justify-content:space-between;align-items:center;}
+    .section-heading h3{font-size:18px;font-weight:700;letter-spacing:-0.2px;}
+    .status-pill{background:var(--accent);color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
+
+    .content-card{margin:0 16px;background:var(--card);border-radius:18px;padding:20px;border:1px solid var(--card-border);box-shadow:var(--shadow);transition:all 0.3s;}
+    .tools-icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;}
+    .tool-grid-item{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;padding:14px 4px;border-radius:16px;transition:all 0.2s;}
+    .tool-grid-item:active{transform:scale(0.94);background:var(--bg);}
+    .tool-icon-circle{width:50px;height:50px;border-radius:16px;display:flex;align-items:center;justify-content:center;transition:background 0.3s;}
+    .tool-icon-circle svg{width:24px;height:24px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;}
+    .tool-icon-circle.accent-bg{background:var(--accent-light);}.tool-icon-circle.accent-bg svg{stroke:var(--accent);}
+    .tool-icon-circle.purple-bg{background:var(--purple-light);}.tool-icon-circle.purple-bg svg{stroke:var(--purple);}
+    .tool-icon-circle.blue-bg{background:var(--blue-light);}.tool-icon-circle.blue-bg svg{stroke:var(--blue);}
+    .tool-icon-circle.orange-bg{background:var(--orange-light);}.tool-icon-circle.orange-bg svg{stroke:var(--orange);}
+    .tool-grid-item span{font-size:11px;font-weight:600;color:var(--text2);line-height:1.3;transition:color 0.3s;}
+
+    .dual-card-row{margin:16px;display:flex;gap:12px;}
+    .mini-info-card{flex:1;background:var(--card);border-radius:16px;padding:18px;border:1px solid var(--card-border);cursor:pointer;box-shadow:var(--shadow);transition:all 0.2s;}
+    .mini-info-card:active{transform:scale(0.97);}
+    .mini-info-card h4{font-size:15px;font-weight:700;margin-bottom:3px;}
+    .mini-info-card p{font-size:12px;color:var(--text2);}
+
+    .promo-banner{margin:16px;background:linear-gradient(135deg,#1C1C1E,#3A3A3C);border-radius:20px;padding:26px 24px;color:white;position:relative;overflow:hidden;}
+    .dark .promo-banner{background:linear-gradient(135deg,var(--accent),#7C7AFF);}
+    .promo-banner::after{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.04);}
+    .promo-banner h3{font-size:18px;font-weight:700;margin-bottom:8px;position:relative;}
+    .promo-banner p{font-size:13px;opacity:0.8;margin-bottom:20px;line-height:1.6;position:relative;}
+    .promo-cta-button{background:white;color:#1C1C1E;border:none;padding:12px 26px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;position:relative;transition:transform 0.2s;}
+    .promo-cta-button:active{transform:scale(0.96);}
+
+    .tip-info-box{margin:16px;background:var(--warning-light);border:1px solid rgba(255,159,10,0.2);border-radius:16px;padding:18px 20px;font-size:13px;color:var(--text);line-height:1.7;transition:all 0.3s;}
+    .tip-info-box strong{color:var(--orange);}
+
+    .page-content-section{padding:16px;}
+    .page-top-bar{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+    .back-circle-button{width:38px;height:38px;border-radius:50%;border:1px solid var(--card-border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;}
+    .back-circle-button:active{transform:scale(0.9);}
+    .back-circle-button svg{width:20px;height:20px;stroke:var(--text);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke 0.3s;}
+    .page-top-bar h2{font-size:20px;font-weight:700;letter-spacing:-0.3px;}
+
+    .form-container{background:var(--card);border-radius:20px;padding:26px;border:1px solid var(--card-border);box-shadow:var(--shadow);transition:all 0.3s;}
+    .form-container h3{font-size:18px;font-weight:700;margin-bottom:22px;letter-spacing:-0.2px;}
+    .form-field{margin-bottom:18px;}
+    .form-field label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:7px;transition:color 0.3s;}
+    .form-field input{width:100%;padding:15px 16px;border:1.5px solid var(--card-border);border-radius:14px;font-size:15px;font-family:'Plus Jakarta Sans',sans-serif;background:var(--input-bg);color:var(--text);outline:none;transition:all 0.25s;}
+    .form-field input:focus{border-color:var(--accent);background:var(--card);box-shadow:0 0 0 4px rgba(88,86,214,0.1);}
+    .form-field input::placeholder{color:var(--text3);}
+
+    .custom-select-wrapper{position:relative;width:100%;}
+    .select-trigger{width:100%;padding:15px 16px;border:1.5px solid var(--card-border);border-radius:14px;font-size:15px;font-family:'Plus Jakarta Sans',sans-serif;background:var(--input-bg);color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.25s;}
+    .select-trigger.open{border-color:var(--accent);background:var(--card);border-bottom-left-radius:0;border-bottom-right-radius:0;box-shadow:0 0 0 4px rgba(88,86,214,0.1);}
+    .select-trigger .select-arrow{transition:transform 0.25s;}
+    .select-trigger.open .select-arrow{transform:rotate(180deg);}
+    .select-dropdown{display:none;position:absolute;top:100%;left:0;right:0;background:var(--card);border:1.5px solid var(--accent);border-top:none;border-bottom-left-radius:14px;border-bottom-right-radius:14px;z-index:50;overflow:hidden;animation:fadeIn 0.2s;transition:background 0.3s;}
+    .select-dropdown.visible{display:block;}
+    .select-dropdown-option{padding:15px 16px;font-size:14px;cursor:pointer;border-bottom:1px solid var(--card-border);transition:background 0.15s;color:var(--text);}
+    .select-dropdown-option:last-child{border-bottom:none;}
+    .select-dropdown-option:active,.select-dropdown-option.active{background:var(--accent-light);color:var(--accent);font-weight:600;}
+
+    .primary-action-button{width:100%;padding:16px;background:var(--accent);color:white;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;margin-top:10px;transition:all 0.2s;}
+    .primary-action-button:active{transform:scale(0.98);opacity:0.9;}
+    .primary-action-button.green-variant{background:var(--success);}
+    .primary-action-button.dark-variant{background:#1C1C1E;}
+    .dark .primary-action-button.dark-variant{background:var(--accent);}
+    .primary-action-button.outline-variant{background:transparent;border:1.5px solid var(--accent);color:var(--accent);}
+
+    .checkbox-grid-layout{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+    .checkbox-card{display:flex;align-items:center;gap:11px;padding:15px;background:var(--input-bg);border-radius:14px;border:1.5px solid var(--card-border);cursor:pointer;font-size:14px;font-weight:500;transition:all 0.2s;color:var(--text);}
+    .checkbox-card:active{transform:scale(0.97);}
+    .checkbox-card.selected{border-color:var(--accent);background:var(--accent-light);}
+    .checkbox-indicator{width:22px;height:22px;border-radius:7px;border:2px solid var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
+    .checkbox-card.selected .checkbox-indicator{background:var(--accent);border-color:var(--accent);}
+    .checkbox-indicator svg{width:14px;height:14px;stroke:white;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity 0.2s;}
+    .checkbox-card.selected .checkbox-indicator svg{opacity:1;}
+
+    .results-container{background:var(--card);border-radius:20px;padding:26px;border:1px solid var(--card-border);margin-top:18px;display:none;box-shadow:var(--shadow);transition:all 0.3s;}
+    .results-container h3{font-size:18px;font-weight:700;margin-bottom:18px;letter-spacing:-0.2px;}
+    .verdict-display{text-align:center;padding:22px;border-radius:16px;margin-bottom:22px;}
+    .verdict-display.positive{background:var(--success-light);}
+    .verdict-display.neutral{background:var(--warning-light);}
+    .verdict-display.negative{background:var(--danger-light);}
+    .verdict-display .verdict-label{font-size:17px;font-weight:700;}
+    .verdict-display.positive .verdict-label{color:var(--success);}
+    .verdict-display.neutral .verdict-label{color:var(--warning);}
+    .verdict-display.negative .verdict-label{color:var(--danger);}
+    .metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .metric-card{padding:16px;border-radius:14px;text-align:center;transition:background 0.3s;}
+    .metric-card .metric-label{font-size:11px;color:var(--text2);font-weight:600;margin-bottom:5px;letter-spacing:0.2px;text-transform:uppercase;}
+    .metric-card .metric-value{font-size:20px;font-weight:800;letter-spacing:-0.3px;}
+    .metric-card.green-metric{background:var(--success-light);}.metric-card.green-metric .metric-value{color:var(--success);}
+    .metric-card.blue-metric{background:var(--blue-light);}.metric-card.blue-metric .metric-value{color:var(--blue);}
+    .metric-card.purple-metric{background:var(--purple-light);}.metric-card.purple-metric .metric-value{color:var(--purple);}
+    .metric-card.orange-metric{background:var(--orange-light);}.metric-card.orange-metric .metric-value{color:var(--orange);}
+    .metric-card.red-metric{background:var(--danger-light);}.metric-card.red-metric .metric-value{color:var(--danger);}
+    .metric-card.teal-metric{background:var(--teal-light);}.metric-card.teal-metric .metric-value{color:#0097A7;}
+    .metric-card.full-width{grid-column:span 2;}
+    .summary-text-box{margin-top:18px;padding:18px;background:var(--bg);border-radius:14px;font-size:13px;color:var(--text2);line-height:1.8;transition:background 0.3s;}
+    .summary-text-box strong{color:var(--text);}
+    .breakdown-line-item{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--card-border);font-size:14px;transition:border-color 0.3s;}
+    .breakdown-line-item:last-child{border-bottom:none;}
+    .breakdown-line-item .item-value{font-weight:700;}
+    .breakdown-total-bar{display:flex;justify-content:space-between;padding:15px 18px;background:var(--accent);color:white;border-radius:12px;font-weight:700;font-size:15px;margin-top:12px;}
+
+    .coming-soon-block{text-align:center;padding:56px 24px;}
+    .coming-soon-block .coming-soon-icon{width:80px;height:80px;border-radius:50%;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;}
+    .coming-soon-block .coming-soon-icon svg{width:38px;height:38px;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;fill:none;}
+    .coming-soon-block h2{font-size:22px;font-weight:700;margin-bottom:10px;letter-spacing:-0.3px;}
+    .coming-soon-block p{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:24px;}
+
+    .profile-header-section{display:flex;align-items:center;gap:16px;margin-bottom:32px;}
+    .profile-avatar-large{width:58px;height:58px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-size:26px;font-weight:700;}
+    .profile-details h2{font-size:18px;font-weight:700;}
+    .profile-details p{font-size:13px;color:var(--text2);}
+    .settings-list-item{display:flex;justify-content:space-between;align-items:center;padding:17px 0;border-bottom:1px solid var(--card-border);font-size:15px;cursor:pointer;transition:border-color 0.3s;}
+    .settings-list-item:last-child{border-bottom:none;}
+    .settings-list-item:active{opacity:0.7;}
+    .settings-list-item .settings-arrow{color:var(--text3);font-size:18px;}
+    .dark-mode-toggle-row{display:flex;justify-content:space-between;align-items:center;padding:17px 0;border-bottom:1px solid var(--card-border);font-size:15px;transition:border-color 0.3s;}
+    .toggle-switch{width:50px;height:30px;background:var(--text3);border-radius:15px;position:relative;cursor:pointer;transition:background 0.3s;}
+    .toggle-switch.active{background:var(--accent);}
+    .toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;background:white;border-radius:50%;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:0 1px 3px rgba(0,0,0,0.15);}
+    .toggle-switch.active::after{transform:translateX(20px);}
+    .logout-action-button{width:100%;padding:15px;border:1.5px solid var(--danger);background:transparent;color:var(--danger);border-radius:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;margin-top:24px;transition:all 0.2s;}
+    .logout-action-button:active{background:var(--danger-light);transform:scale(0.98);}
+
+    .history-card{background:var(--card);border-radius:16px;padding:18px 20px;border:1px solid var(--card-border);margin-bottom:12px;cursor:pointer;box-shadow:var(--shadow);transition:all 0.2s;display:flex;justify-content:space-between;align-items:center;}
+    .history-card:active{transform:scale(0.98);opacity:0.9;}
+    .history-card-left{flex:1;}
+    .history-card-title{font-size:15px;font-weight:700;margin-bottom:3px;}
+    .history-card-date{font-size:12px;color:var(--text2);}
+    .history-card-amount{font-size:13px;font-weight:600;margin-top:4px;}
+    .history-card-right{display:flex;gap:10px;align-items:center;}
+    .history-type-pill{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--accent);color:white;}
+    .history-delete-button{background:none;border:none;cursor:pointer;padding:8px;border-radius:50%;transition:background 0.2s;}
+    .history-delete-button:active{background:var(--danger-light);}
+    .history-delete-button svg{width:18px;height:18px;stroke:var(--danger);fill:none;stroke-width:2;stroke-linecap:round;}
+    .empty-state{text-align:center;padding:56px 24px;}
+    .empty-state p{color:var(--text2);font-size:15px;margin-bottom:22px;line-height:1.6;}
+
+    .saved-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--success);color:white;padding:14px 28px;border-radius:14px;font-size:14px;font-weight:700;z-index:999;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);box-shadow:0 8px 24px rgba(52,199,89,0.3);font-family:'Plus Jakarta Sans',sans-serif;}
+    .saved-toast.show{transform:translateX(-50%) translateY(0);}
+
+    .bottom-navigation{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--nav-bg);display:flex;justify-content:space-around;padding:8px 0 18px;border-top:1px solid var(--card-border);z-index:100;transition:all 0.3s;}
+    .bottom-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;padding:6px 14px;position:relative;transition:transform 0.2s;}
+    .bottom-nav-item:active{transform:scale(0.88);}
+    .bottom-nav-item svg{width:24px;height:24px;stroke:var(--text3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke 0.3s;}
+    .bottom-nav-item span{font-size:10px;font-weight:600;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;transition:color 0.3s;}
+    .bottom-nav-item.active-tab svg{stroke:var(--accent);}
+    .bottom-nav-item.active-tab span{color:var(--accent);}
+    .bottom-nav-item.active-tab::before{content:'';position:absolute;top:-1px;width:22px;height:3px;background:var(--accent);border-radius:0 0 4px 4px;}
+    .page{display:none;}.page.active{display:block;}
+    .app-main-wrapper{display:none;}
   </style>
 </head>
 <body>
 
-  <!-- ===== LOGIN ===== -->
+  <div class="saved-toast" id="savedToast">Report saved successfully</div>
+
   <div class="login-wrapper" id="loginPage">
     <div class="login-brand">
-      <div class="brand-icon">
-        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      </div>
+      <div class="brand-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
       <h1>Prop<span>Smart</span></h1>
       <p>Smart property analysis, simplified.</p>
     </div>
-
     <div class="login-form-container">
       <h3>Welcome</h3>
       <p class="login-subtitle">Enter your details to get started</p>
-
       <div class="login-error-message" id="loginError"></div>
-
-      <div class="login-field">
-        <label>Full Name</label>
-        <input type="text" id="inpName" placeholder="Your full name">
-      </div>
-
-      <div class="login-field">
-        <label>Phone Number</label>
-        <input type="tel" id="inpPhone" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric">
-      </div>
-
-      <div class="login-field">
-        <label>Email <span style="color:var(--text3);font-weight:400;">(optional)</span></label>
-        <input type="email" id="inpEmail" placeholder="your@email.com">
-      </div>
-
+      <div class="login-field"><label>Full Name</label><input type="text" id="inpName" placeholder="Your full name"></div>
+      <div class="login-field"><label>Phone Number</label><input type="tel" id="inpPhone" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric"></div>
+      <div class="login-field"><label>Email <span style="color:var(--text3);font-weight:400;">(optional)</span></label><input type="email" id="inpEmail" placeholder="your@email.com"></div>
       <button class="login-continue-button" onclick="handleLogin()">Continue</button>
-
       <p class="login-terms">By continuing, you agree to our<br>Terms of Service & Privacy Policy</p>
     </div>
   </div>
 
-  <!-- ===== APP ===== -->
   <div class="app-main-wrapper" id="appWrapper">
-
     <nav class="top-navbar">
       <div class="top-navbar-logo"><h1>Prop<span>Smart</span></h1></div>
       <div class="top-navbar-actions">
-        <div class="navbar-icon-button">
-          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <div class="notification-badge">3</div>
-        </div>
+        <div class="navbar-icon-button" onclick="showPage('page-history')"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="navbar-icon-button"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="notification-badge">3</div></div>
         <div class="navbar-user-avatar" id="navAvatar" onclick="showPage('page-profile')"></div>
       </div>
     </nav>
 
-    <!-- HOME -->
     <div id="page-home" class="page active">
-      <div class="hero-section animate-fade-up">
-        <h2 id="greetingText">Smart Property Analysis</h2>
-        <p>Analyze ROI, renovation costs, and true profitability of any property in under 60 seconds</p>
-        <button class="hero-cta-button" onclick="showPage('page-roi')">Get Started</button>
-      </div>
-
+      <div class="hero-section animate-fade-up"><h2 id="greetingText">Smart Property Analysis</h2><p>Analyze ROI, renovation costs, and true profitability of any property in under 60 seconds</p><button class="hero-cta-button" onclick="showPage('page-roi')">Get Started</button></div>
       <div class="section-heading animate-fade-up stagger-1"><h3>Quick Tools</h3></div>
-      <div class="content-card animate-fade-up stagger-2">
-        <div class="tools-icon-grid">
-          <div class="tool-grid-item" onclick="showPage('page-roi')">
-            <div class="tool-icon-circle accent-bg"><svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
-            <span>ROI Calc</span>
-          </div>
-          <div class="tool-grid-item" onclick="showPage('page-reno')">
-            <div class="tool-icon-circle purple-bg"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-            <span>Renovation</span>
-          </div>
-          <div class="tool-grid-item" onclick="showPage('page-trueroi')">
-            <div class="tool-icon-circle blue-bg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
-            <span>TRUE ROI</span>
-          </div>
-          <div class="tool-grid-item" onclick="showPage('page-emi')">
-            <div class="tool-icon-circle orange-bg"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
-            <span>EMI Calc</span>
-          </div>
-        </div>
-      </div>
-
+      <div class="content-card animate-fade-up stagger-2"><div class="tools-icon-grid">
+        <div class="tool-grid-item" onclick="showPage('page-roi')"><div class="tool-icon-circle accent-bg"><svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div><span>ROI Calc</span></div>
+        <div class="tool-grid-item" onclick="showPage('page-reno')"><div class="tool-icon-circle purple-bg"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><span>Renovation</span></div>
+        <div class="tool-grid-item" onclick="showPage('page-trueroi')"><div class="tool-icon-circle blue-bg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><span>TRUE ROI</span></div>
+        <div class="tool-grid-item" onclick="showPage('page-emi')"><div class="tool-icon-circle orange-bg"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><span>EMI Calc</span></div>
+      </div></div>
       <div class="section-heading animate-fade-up stagger-3"><h3>Explore</h3><span class="status-pill">New</span></div>
-      <div class="content-card animate-fade-up stagger-4">
-        <div class="tools-icon-grid">
-          <div class="tool-grid-item" onclick="showPage('page-trends')">
-            <div class="tool-icon-circle accent-bg"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg></div>
-            <span>Trends</span>
-          </div>
-          <div class="tool-grid-item" onclick="showPage('page-compare')">
-            <div class="tool-icon-circle purple-bg"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
-            <span>Compare</span>
-          </div>
-          <div class="tool-grid-item" onclick="showPage('page-areas')">
-            <div class="tool-icon-circle blue-bg"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-            <span>Top Areas</span>
-          </div>
-          <div class="tool-grid-item" onclick="showPage('page-tips')">
-            <div class="tool-icon-circle orange-bg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div>
-            <span>Tips</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="dual-card-row animate-fade-up stagger-5">
-        <div class="mini-info-card" onclick="showPage('page-trends')"><h4>Market Trends</h4><p>Latest price data</p></div>
-        <div class="mini-info-card" onclick="showPage('page-areas')"><h4>Top Areas 2026</h4><p>Best investment spots</p></div>
-      </div>
-
+      <div class="content-card animate-fade-up stagger-4"><div class="tools-icon-grid">
+        <div class="tool-grid-item" onclick="showPage('page-trends')"><div class="tool-icon-circle accent-bg"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg></div><span>Trends</span></div>
+        <div class="tool-grid-item" onclick="showPage('page-compare')"><div class="tool-icon-circle purple-bg"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><span>Compare</span></div>
+        <div class="tool-grid-item" onclick="showPage('page-areas')"><div class="tool-icon-circle blue-bg"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><span>Top Areas</span></div>
+        <div class="tool-grid-item" onclick="showPage('page-tips')"><div class="tool-icon-circle orange-bg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div><span>Tips</span></div>
+      </div></div>
+      <div class="dual-card-row animate-fade-up stagger-5"><div class="mini-info-card" onclick="showPage('page-trends')"><h4>Market Trends</h4><p>Latest price data</p></div><div class="mini-info-card" onclick="showPage('page-areas')"><h4>Top Areas 2026</h4><p>Best investment spots</p></div></div>
       <div class="promo-banner"><h3>TRUE ROI Calculator</h3><p>Property price + renovation cost = total investment. Discover your real returns — exclusively on PropSmart.</p><button class="promo-cta-button" onclick="showPage('page-trueroi')">Calculate TRUE ROI</button></div>
-
       <div class="tip-info-box"><strong>Pro Tip:</strong> Always factor in renovation costs before purchasing a resale property. A property listed at 50L with 10L in renovations is actually a 60L investment.</div>
     </div>
 
-    <!-- ROI -->
     <div id="page-roi" class="page"><div class="page-content-section">
       <div class="page-top-bar"><button class="back-circle-button" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button><h2>ROI Calculator</h2></div>
-      <div class="form-container animate-fade-up">
-        <h3>Property Details</h3>
+      <div class="form-container animate-fade-up"><h3>Property Details</h3>
         <div class="form-field"><label>Property Price (₹)</label><input type="number" id="r-price" placeholder="Property purchase price" inputmode="numeric"></div>
         <div class="form-field"><label>Expected Monthly Rent (₹)</label><input type="number" id="r-rent" placeholder="Monthly rental income" inputmode="numeric"></div>
         <div class="form-field"><label>Monthly Maintenance (₹)</label><input type="number" id="r-maint" placeholder="Monthly upkeep costs" inputmode="numeric"></div>
@@ -1339,28 +284,17 @@
         <button class="primary-action-button" onclick="calcROI()">Calculate ROI</button>
       </div>
       <div class="results-container" id="roi-res"><h3>Analysis Report</h3><div id="roi-out"></div>
-        <button class="primary-action-button green-variant" style="margin-top:18px;" onclick="showPage('page-reno')">Calculate Renovation Cost Next</button>
+        <button class="primary-action-button green-variant" style="margin-top:14px;" onclick="saveReport('roi')">Save This Report</button>
+        <button class="primary-action-button outline-variant" style="margin-top:8px;" onclick="showPage('page-reno')">Calculate Renovation Cost Next</button>
       </div>
     </div></div>
 
-    <!-- RENOVATION -->
     <div id="page-reno" class="page"><div class="page-content-section">
       <div class="page-top-bar"><button class="back-circle-button" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button><h2>Renovation Estimator</h2></div>
-      <div class="form-container animate-fade-up">
-        <h3>Renovation Details</h3>
-        <div class="form-field"><label>City Type</label>
-          <div class="custom-select-wrapper" id="cs-city" data-value="metro">
-            <div class="select-trigger" onclick="openSelect('cs-city')"><span class="select-text">Metro (Mumbai, Delhi, Bangalore)</span><span class="select-arrow">▾</span></div>
-            <div class="select-dropdown"><div class="select-dropdown-option active" onclick="selectOption('cs-city','metro','Metro (Mumbai, Delhi, Bangalore)')">Metro (Mumbai, Delhi, Bangalore)</div><div class="select-dropdown-option" onclick="selectOption('cs-city','tier2','Tier 2 (Jaipur, Pune, Lucknow)')">Tier 2 (Jaipur, Pune, Lucknow)</div><div class="select-dropdown-option" onclick="selectOption('cs-city','tier3','Tier 3 (Smaller Cities)')">Tier 3 (Smaller Cities)</div></div>
-          </div>
-        </div>
+      <div class="form-container animate-fade-up"><h3>Renovation Details</h3>
+        <div class="form-field"><label>City Type</label><div class="custom-select-wrapper" id="cs-city" data-value="metro"><div class="select-trigger" onclick="openSelect('cs-city')"><span class="select-text">Metro (Mumbai, Delhi, Bangalore)</span><span class="select-arrow">▾</span></div><div class="select-dropdown"><div class="select-dropdown-option active" onclick="selectOption('cs-city','metro','Metro (Mumbai, Delhi, Bangalore)')">Metro (Mumbai, Delhi, Bangalore)</div><div class="select-dropdown-option" onclick="selectOption('cs-city','tier2','Tier 2 (Jaipur, Pune, Lucknow)')">Tier 2 (Jaipur, Pune, Lucknow)</div><div class="select-dropdown-option" onclick="selectOption('cs-city','tier3','Tier 3 (Smaller Cities)')">Tier 3 (Smaller Cities)</div></div></div></div>
         <div class="form-field"><label>Total Area (sq.ft)</label><input type="number" id="rv-area" placeholder="Total carpet area" inputmode="numeric"></div>
-        <div class="form-field"><label>Quality Level</label>
-          <div class="custom-select-wrapper" id="cs-ql" data-value="budget">
-            <div class="select-trigger" onclick="openSelect('cs-ql')"><span class="select-text">Budget (Basic)</span><span class="select-arrow">▾</span></div>
-            <div class="select-dropdown"><div class="select-dropdown-option active" onclick="selectOption('cs-ql','budget','Budget (Basic)')">Budget (Basic)</div><div class="select-dropdown-option" onclick="selectOption('cs-ql','mid','Mid-Range (Good Quality)')">Mid-Range (Good Quality)</div><div class="select-dropdown-option" onclick="selectOption('cs-ql','premium','Premium (Top Quality)')">Premium (Top Quality)</div></div>
-          </div>
-        </div>
+        <div class="form-field"><label>Quality Level</label><div class="custom-select-wrapper" id="cs-ql" data-value="budget"><div class="select-trigger" onclick="openSelect('cs-ql')"><span class="select-text">Budget (Basic)</span><span class="select-arrow">▾</span></div><div class="select-dropdown"><div class="select-dropdown-option active" onclick="selectOption('cs-ql','budget','Budget (Basic)')">Budget (Basic)</div><div class="select-dropdown-option" onclick="selectOption('cs-ql','mid','Mid-Range (Good Quality)')">Mid-Range (Good Quality)</div><div class="select-dropdown-option" onclick="selectOption('cs-ql','premium','Premium (Top Quality)')">Premium (Top Quality)</div></div></div></div>
         <label style="font-size:13px;font-weight:600;margin-bottom:12px;display:block;">Select Renovation Areas</label>
         <div class="checkbox-grid-layout">
           <div class="checkbox-card" onclick="toggleCheckbox(this)" data-id="kitchen"><div class="checkbox-indicator"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Kitchen</div>
@@ -1375,15 +309,14 @@
         <button class="primary-action-button" onclick="calcReno()">Calculate Renovation Cost</button>
       </div>
       <div class="results-container" id="reno-res"><h3>Cost Breakdown</h3><div id="reno-out"></div>
-        <button class="primary-action-button dark-variant" style="margin-top:18px;" onclick="showPage('page-trueroi')">Calculate TRUE ROI Next</button>
+        <button class="primary-action-button green-variant" style="margin-top:14px;" onclick="saveReport('reno')">Save This Report</button>
+        <button class="primary-action-button outline-variant" style="margin-top:8px;" onclick="showPage('page-trueroi')">Calculate TRUE ROI Next</button>
       </div>
     </div></div>
 
-    <!-- TRUE ROI -->
     <div id="page-trueroi" class="page"><div class="page-content-section">
       <div class="page-top-bar"><button class="back-circle-button" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button><h2>TRUE ROI</h2></div>
-      <div class="form-container animate-fade-up">
-        <h3>Complete Investment Analysis</h3>
+      <div class="form-container animate-fade-up"><h3>Complete Investment Analysis</h3>
         <div class="form-field"><label>Property Price (₹)</label><input type="number" id="t-price" placeholder="Purchase price" inputmode="numeric"></div>
         <div class="form-field"><label>Renovation Cost (₹)</label><input type="number" id="t-reno" placeholder="Total renovation budget" inputmode="numeric"></div>
         <div class="form-field"><label>Legal & Other Charges (₹)</label><input type="number" id="t-legal" placeholder="Registration, stamp duty, etc." inputmode="numeric"></div>
@@ -1392,41 +325,45 @@
         <div class="form-field"><label>Expected Appreciation (%/year)</label><input type="number" id="t-appr" placeholder="Annual value appreciation" step="0.5" inputmode="decimal"></div>
         <button class="primary-action-button" onclick="calcTrue()">Calculate TRUE ROI</button>
       </div>
-      <div class="results-container" id="true-res"><h3>TRUE ROI Report</h3><div id="true-out"></div></div>
+      <div class="results-container" id="true-res"><h3>TRUE ROI Report</h3><div id="true-out"></div>
+        <button class="primary-action-button green-variant" style="margin-top:14px;" onclick="saveReport('trueroi')">Save This Report</button>
+      </div>
     </div></div>
 
-    <!-- EMI -->
     <div id="page-emi" class="page"><div class="page-content-section">
       <div class="page-top-bar"><button class="back-circle-button" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button><h2>EMI Calculator</h2></div>
-      <div class="form-container animate-fade-up">
-        <h3>Loan Details</h3>
+      <div class="form-container animate-fade-up"><h3>Loan Details</h3>
         <div class="form-field"><label>Loan Amount (₹)</label><input type="number" id="e-loan" placeholder="Total loan amount" inputmode="numeric"></div>
         <div class="form-field"><label>Interest Rate (%)</label><input type="number" id="e-int" placeholder="Annual interest rate" step="0.1" inputmode="decimal"></div>
         <div class="form-field"><label>Tenure (Years)</label><input type="number" id="e-yrs" placeholder="Loan repayment period" inputmode="numeric"></div>
         <button class="primary-action-button" onclick="calcEMI()">Calculate EMI</button>
       </div>
-      <div class="results-container" id="emi-res"><h3>EMI Breakdown</h3><div id="emi-out"></div></div>
+      <div class="results-container" id="emi-res"><h3>EMI Breakdown</h3><div id="emi-out"></div>
+        <button class="primary-action-button green-variant" style="margin-top:14px;" onclick="saveReport('emi')">Save This Report</button>
+      </div>
     </div></div>
 
-    <!-- TRENDS -->
+    <div id="page-history" class="page"><div class="page-content-section">
+      <div class="page-top-bar"><button class="back-circle-button" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button><h2>Saved Reports</h2></div>
+      <div id="historyList"></div>
+      <div id="emptyHistory" class="empty-state"><p>No saved reports yet. Start analyzing properties and save your reports here.</p><button class="primary-action-button" style="max-width:250px;margin:0 auto;" onclick="showPage('page-roi')">Start Analysis</button></div>
+    </div></div>
+
     <div id="page-trends" class="page"><div class="page-content-section">
       <div class="page-top-bar"><button class="back-circle-button" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button><h2>Market Trends</h2></div>
       <div class="form-container"><div class="coming-soon-block"><div class="coming-soon-icon" style="background:var(--accent-light);"><svg viewBox="0 0 24 24" style="stroke:var(--accent);"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg></div><h2>Market Trends</h2><p>Real-time property price trends and growth predictions for major Indian cities.</p><span class="status-pill" style="display:inline-block;padding:6px 18px;font-size:13px;">Coming Soon</span></div></div>
     </div></div>
 
-    <!-- COMPARE -->
     <div id="page-compare" class="page"><div class="page-content-section">
       <div class="page-top-bar"><button class="back-circle-button" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button><h2>Compare Properties</h2></div>
       <div class="form-container"><div class="coming-soon-block"><div class="coming-soon-icon" style="background:var(--purple-light);"><svg viewBox="0 0 24 24" style="stroke:var(--purple);"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><h2>Compare Properties</h2><p>Compare multiple properties side by side — pricing, ROI, location scores, and more.</p><span class="status-pill" style="display:inline-block;padding:6px 18px;font-size:13px;">Coming Soon</span></div></div>
     </div></div>
 
-    <!-- TOP AREAS -->
     <div id="page-areas" class="page"><div class="page-content-section">
       <div class="page-top-bar"><button class="back-circle-button" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button><h2>Top Areas 2026</h2></div>
       <div class="form-container"><div class="coming-soon-block"><div class="coming-soon-icon" style="background:var(--blue-light);"><svg viewBox="0 0 24 24" style="stroke:var(--blue);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><h2>Top Investment Areas</h2><p>Data-driven insights on the best localities for property investment, based on growth trajectories and infrastructure development.</p><span class="status-pill" style="display:inline-block;padding:6px 18px;font-size:13px;">Coming Soon</span></div></div>
     </div></div>
 
-    <!-- TIPS -->
     <div id="page-tips" class="page"><div class="page-content-section">
       <div class="page-top-bar"><button class="back-circle-button" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button><h2>Investment Tips</h2></div>
       <div class="tip-info-box animate-fade-up stagger-1" style="margin:0 0 12px;background:var(--success-light);border-color:rgba(52,199,89,0.2);"><strong>Tip 1:</strong> A net rental yield below 3% is considered weak. Aim for 5% or above for a solid investment.</div>
@@ -1438,19 +375,13 @@
       <div class="tip-info-box animate-fade-up" style="animation-delay:0.35s;opacity:0;margin:0;background:var(--danger-light);border-color:rgba(255,59,48,0.2);"><strong>Warning:</strong> Be cautious of anyone promising "guaranteed returns" in real estate. No investment is without risk.</div>
     </div></div>
 
-    <!-- PROFILE -->
     <div id="page-profile" class="page"><div class="page-content-section">
       <div class="page-top-bar"><button class="back-circle-button" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button><h2>Profile</h2></div>
-      <div class="profile-header-section animate-fade-up">
-        <div class="profile-avatar-large" id="profileAvatar"></div>
-        <div class="profile-details"><h2 id="profileName">User</h2><p id="profileSubtext">Free Plan</p></div>
-      </div>
+      <div class="profile-header-section animate-fade-up"><div class="profile-avatar-large" id="profileAvatar"></div><div class="profile-details"><h2 id="profileName">User</h2><p id="profileSubtext">Free Plan</p></div></div>
       <div class="section-heading" style="padding:0 0 14px;"><h3>Preferences</h3></div>
       <div class="content-card animate-fade-up stagger-1" style="margin:0;">
-        <div class="dark-mode-toggle-row">
-          <span>Dark Mode</span>
-          <div class="toggle-switch" id="darkToggle" onclick="toggleDarkMode()"></div>
-        </div>
+        <div class="dark-mode-toggle-row"><span>Dark Mode</span><div class="toggle-switch" id="darkToggle" onclick="toggleDarkMode()"></div></div>
+        <div class="settings-list-item" onclick="showPage('page-history')"><span>Saved Reports</span><span class="settings-arrow">›</span></div>
         <div class="settings-list-item"><span>App Settings</span><span class="settings-arrow">›</span></div>
         <div class="settings-list-item"><span>Privacy Policy</span><span class="settings-arrow">›</span></div>
         <div class="settings-list-item"><span>Terms of Use</span><span class="settings-arrow">›</span></div>
@@ -1460,7 +391,6 @@
       <p style="text-align:center;color:var(--text3);font-size:11px;margin-top:18px;">PropSmart v1.0.0</p>
     </div></div>
 
-    <!-- BOTTOM NAV -->
     <nav class="bottom-navigation">
       <button class="bottom-nav-item active-tab" onclick="showPage('page-home')" id="nav-home"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></button>
       <button class="bottom-nav-item" onclick="showPage('page-roi')" id="nav-roi"><svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg><span>Analyze</span></button>
@@ -1471,188 +401,43 @@
   </div>
 
   <script>
-    // ===== LOGIN =====
-    function handleLogin() {
-      var name = document.getElementById('inpName').value.trim();
-      var phone = document.getElementById('inpPhone').value.trim();
-      var email = document.getElementById('inpEmail').value.trim();
-      var errorBox = document.getElementById('loginError');
+    function handleLogin(){var name=document.getElementById('inpName').value.trim();var phone=document.getElementById('inpPhone').value.trim();var email=document.getElementById('inpEmail').value.trim();var errorBox=document.getElementById('loginError');if(!name||name.length<2){errorBox.textContent='Please enter your full name';errorBox.style.display='block';return;}if(!phone||phone.length!==10||isNaN(phone)){errorBox.textContent='Please enter a valid 10-digit phone number';errorBox.style.display='block';return;}errorBox.style.display='none';localStorage.setItem('ps_name',name);localStorage.setItem('ps_phone',phone);localStorage.setItem('ps_email',email);initializeApp(name,phone,email);}
 
-      if (!name || name.length < 2) {
-        errorBox.textContent = 'Please enter your full name';
-        errorBox.style.display = 'block';
-        return;
-      }
-      if (!phone || phone.length !== 10 || isNaN(phone)) {
-        errorBox.textContent = 'Please enter a valid 10-digit phone number';
-        errorBox.style.display = 'block';
-        return;
-      }
+    function initializeApp(name,phone,email){document.getElementById('loginPage').style.display='none';document.getElementById('appWrapper').style.display='block';var firstName=name.split(' ')[0];var initial=firstName.charAt(0).toUpperCase();var hour=new Date().getHours();var greeting=hour<12?'Good Morning':hour<17?'Good Afternoon':'Good Evening';document.getElementById('greetingText').textContent=greeting+', '+firstName;document.getElementById('navAvatar').textContent=initial;document.getElementById('profileAvatar').textContent=initial;document.getElementById('profileName').textContent=name;document.getElementById('profileSubtext').textContent=phone+(email?' · '+email:'');if(localStorage.getItem('ps_dark')==='true'){document.body.classList.add('dark');document.getElementById('darkToggle').classList.add('active');}}
 
-      errorBox.style.display = 'none';
-      localStorage.setItem('ps_name', name);
-      localStorage.setItem('ps_phone', phone);
-      localStorage.setItem('ps_email', email);
-      initializeApp(name, phone, email);
-    }
+    function handleLogout(){localStorage.removeItem('ps_name');localStorage.removeItem('ps_phone');localStorage.removeItem('ps_email');document.getElementById('appWrapper').style.display='none';document.getElementById('loginPage').style.display='flex';document.getElementById('inpName').value='';document.getElementById('inpPhone').value='';document.getElementById('inpEmail').value='';}
 
-    function initializeApp(name, phone, email) {
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('appWrapper').style.display = 'block';
+    (function(){var n=localStorage.getItem('ps_name');var p=localStorage.getItem('ps_phone');var e=localStorage.getItem('ps_email')||'';if(n&&p)initializeApp(n,p,e);})();
 
-      var firstName = name.split(' ')[0];
-      var initial = firstName.charAt(0).toUpperCase();
-      var hour = new Date().getHours();
-      var greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+    function toggleDarkMode(){document.body.classList.toggle('dark');var isDark=document.body.classList.contains('dark');document.getElementById('darkToggle').classList.toggle('active');localStorage.setItem('ps_dark',isDark);}
 
-      document.getElementById('greetingText').textContent = greeting + ', ' + firstName;
-      document.getElementById('navAvatar').textContent = initial;
-      document.getElementById('profileAvatar').textContent = initial;
-      document.getElementById('profileName').textContent = name;
-      document.getElementById('profileSubtext').textContent = phone + (email ? ' · ' + email : '');
+    function showPage(pageId){document.querySelectorAll('.page').forEach(function(page){page.classList.remove('active');});document.getElementById(pageId).classList.add('active');document.querySelectorAll('.bottom-nav-item').forEach(function(navItem){navItem.classList.remove('active-tab');});var navMap={'page-home':'nav-home','page-roi':'nav-roi','page-reno':'nav-reno','page-trueroi':'nav-true','page-profile':'nav-prof'};if(navMap[pageId])document.getElementById(navMap[pageId]).classList.add('active-tab');window.scrollTo(0,0);if(pageId==='page-history')loadHistory();}
 
-      // Restore dark mode
-      if (localStorage.getItem('ps_dark') === 'true') {
-        document.body.classList.add('dark');
-        document.getElementById('darkToggle').classList.add('active');
-      }
-    }
+    function openSelect(selectId){var wrapper=document.getElementById(selectId);var trigger=wrapper.querySelector('.select-trigger');var dropdown=wrapper.querySelector('.select-dropdown');var isOpen=dropdown.classList.contains('visible');document.querySelectorAll('.select-dropdown').forEach(function(d){d.classList.remove('visible');});document.querySelectorAll('.select-trigger').forEach(function(t){t.classList.remove('open');});if(!isOpen){dropdown.classList.add('visible');trigger.classList.add('open');}}
+    function selectOption(selectId,value,displayText){var wrapper=document.getElementById(selectId);wrapper.setAttribute('data-value',value);wrapper.querySelector('.select-text').textContent=displayText;wrapper.querySelector('.select-dropdown').classList.remove('visible');wrapper.querySelector('.select-trigger').classList.remove('open');wrapper.querySelectorAll('.select-dropdown-option').forEach(function(option){option.classList.remove('active');});event.target.classList.add('active');}
+    document.addEventListener('click',function(event){if(!event.target.closest('.custom-select-wrapper')){document.querySelectorAll('.select-dropdown').forEach(function(d){d.classList.remove('visible');});document.querySelectorAll('.select-trigger').forEach(function(t){t.classList.remove('open');});}});
+    function toggleCheckbox(element){element.classList.toggle('selected');}
 
-    function handleLogout() {
-      localStorage.removeItem('ps_name');
-      localStorage.removeItem('ps_phone');
-      localStorage.removeItem('ps_email');
-      document.getElementById('appWrapper').style.display = 'none';
-      document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('inpName').value = '';
-      document.getElementById('inpPhone').value = '';
-      document.getElementById('inpEmail').value = '';
-    }
+    function formatNumber(number){return Math.round(number).toLocaleString('en-IN');}
+    function getInputValue(inputId){return Number(document.getElementById(inputId).value)||0;}
 
-    // Auto-login
-    (function() {
-      var savedName = localStorage.getItem('ps_name');
-      var savedPhone = localStorage.getItem('ps_phone');
-      var savedEmail = localStorage.getItem('ps_email') || '';
-      if (savedName && savedPhone) initializeApp(savedName, savedPhone, savedEmail);
-    })();
+    function showToast(message){var toast=document.getElementById('savedToast');toast.textContent=message;toast.classList.add('show');setTimeout(function(){toast.classList.remove('show');},2500);}
 
-    // ===== DARK MODE =====
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark');
-      var isDark = document.body.classList.contains('dark');
-      document.getElementById('darkToggle').classList.toggle('active');
-      localStorage.setItem('ps_dark', isDark);
-    }
+    function saveReport(type){var report={id:Date.now(),type:type,date:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}),time:new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}),data:{}};if(type==='roi'){report.title='ROI Analysis';report.data={price:getInputValue('r-price'),rent:getInputValue('r-rent'),result:document.getElementById('roi-out').innerHTML};}else if(type==='reno'){report.title='Renovation Estimate';report.data={area:getInputValue('rv-area'),result:document.getElementById('reno-out').innerHTML};}else if(type==='trueroi'){report.title='TRUE ROI Analysis';report.data={price:getInputValue('t-price'),reno:getInputValue('t-reno'),result:document.getElementById('true-out').innerHTML};}else if(type==='emi'){report.title='EMI Calculation';report.data={loan:getInputValue('e-loan'),result:document.getElementById('emi-out').innerHTML};}var reports=JSON.parse(localStorage.getItem('ps_reports')||'[]');reports.unshift(report);if(reports.length>20)reports=reports.slice(0,20);localStorage.setItem('ps_reports',JSON.stringify(reports));showToast('Report saved successfully');}
 
-    // ===== NAVIGATION =====
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(function(page) { page.classList.remove('active'); });
-      document.getElementById(pageId).classList.add('active');
-      document.querySelectorAll('.bottom-nav-item').forEach(function(navItem) { navItem.classList.remove('active-tab'); });
-      var navMap = {'page-home':'nav-home','page-roi':'nav-roi','page-reno':'nav-reno','page-trueroi':'nav-true','page-profile':'nav-prof'};
-      if (navMap[pageId]) document.getElementById(navMap[pageId]).classList.add('active-tab');
-      window.scrollTo(0, 0);
-    }
+    function loadHistory(){var reports=JSON.parse(localStorage.getItem('ps_reports')||'[]');var container=document.getElementById('historyList');var empty=document.getElementById('emptyHistory');if(reports.length===0){container.innerHTML='';empty.style.display='block';return;}empty.style.display='none';var html='';reports.forEach(function(report,index){var amount='';if(report.data.price)amount='₹'+formatNumber(report.data.price);else if(report.data.loan)amount='₹'+formatNumber(report.data.loan);else if(report.data.area)amount=report.data.area+' sq.ft';html+='<div class="history-card animate-fade-up" style="animation-delay:'+(index*0.05)+'s;opacity:0;" onclick="viewReport('+report.id+')"><div class="history-card-left"><div class="history-card-title">'+report.title+'</div><div class="history-card-date">'+report.date+' at '+report.time+'</div>';if(amount)html+='<div class="history-card-amount" style="color:var(--accent);">'+amount+'</div>';html+='</div><div class="history-card-right"><span class="history-type-pill">'+report.type.toUpperCase()+'</span><button class="history-delete-button" onclick="event.stopPropagation();deleteReport('+report.id+')"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></div>';});container.innerHTML=html;}
 
-    // ===== CUSTOM SELECT =====
-    function openSelect(selectId) {
-      var wrapper = document.getElementById(selectId);
-      var trigger = wrapper.querySelector('.select-trigger');
-      var dropdown = wrapper.querySelector('.select-dropdown');
-      var isOpen = dropdown.classList.contains('visible');
-      document.querySelectorAll('.select-dropdown').forEach(function(d) { d.classList.remove('visible'); });
-      document.querySelectorAll('.select-trigger').forEach(function(t) { t.classList.remove('open'); });
-      if (!isOpen) { dropdown.classList.add('visible'); trigger.classList.add('open'); }
-    }
+    function viewReport(reportId){var reports=JSON.parse(localStorage.getItem('ps_reports')||'[]');var report=reports.find(function(r){return r.id===reportId;});if(!report)return;var pageMap={roi:'page-roi',reno:'page-reno',trueroi:'page-trueroi',emi:'page-emi'};var resMap={roi:'roi-res',reno:'reno-res',trueroi:'true-res',emi:'emi-res'};var outMap={roi:'roi-out',reno:'reno-out',trueroi:'true-out',emi:'emi-out'};showPage(pageMap[report.type]);document.getElementById(outMap[report.type]).innerHTML=report.data.result;document.getElementById(resMap[report.type]).style.display='block';setTimeout(function(){document.getElementById(resMap[report.type]).scrollIntoView({behavior:'smooth'});},300);}
 
-    function selectOption(selectId, value, displayText) {
-      var wrapper = document.getElementById(selectId);
-      wrapper.setAttribute('data-value', value);
-      wrapper.querySelector('.select-text').textContent = displayText;
-      wrapper.querySelector('.select-dropdown').classList.remove('visible');
-      wrapper.querySelector('.select-trigger').classList.remove('open');
-      wrapper.querySelectorAll('.select-dropdown-option').forEach(function(option) { option.classList.remove('active'); });
-      event.target.classList.add('active');
-    }
+    function deleteReport(reportId){var reports=JSON.parse(localStorage.getItem('ps_reports')||'[]');reports=reports.filter(function(r){return r.id!==reportId;});localStorage.setItem('ps_reports',JSON.stringify(reports));loadHistory();showToast('Report deleted');}
 
-    document.addEventListener('click', function(event) {
-      if (!event.target.closest('.custom-select-wrapper')) {
-        document.querySelectorAll('.select-dropdown').forEach(function(d) { d.classList.remove('visible'); });
-        document.querySelectorAll('.select-trigger').forEach(function(t) { t.classList.remove('open'); });
-      }
-    });
+    function calcROI(){var price=getInputValue('r-price'),rent=getInputValue('r-rent'),maintenance=getInputValue('r-maint'),tax=getInputValue('r-tax'),loanAmount=getInputValue('r-loan'),interestRate=getInputValue('r-int'),loanYears=getInputValue('r-yrs');if(!price||!rent){alert('Please enter property price and expected rent');return;}var annualRent=rent*12,annualExpenses=(maintenance*12)+tax,netIncome=annualRent-annualExpenses;var grossYield=(annualRent/price*100).toFixed(1),netYield=(netIncome/price*100).toFixed(1);var emi=0;if(loanAmount>0&&interestRate>0&&loanYears>0){var monthlyRate=interestRate/12/100,totalMonths=loanYears*12;emi=Math.round((loanAmount*monthlyRate*Math.pow(1+monthlyRate,totalMonths))/(Math.pow(1+monthlyRate,totalMonths)-1));}var monthlyCashFlow=rent-maintenance-(tax/12)-emi,downPayment=price-loanAmount;var roiPercent=downPayment>0?((monthlyCashFlow*12/downPayment)*100).toFixed(1):'0';var verdictClass,verdictText;if(netYield>5){verdictClass='positive';verdictText='Excellent Investment';}else if(netYield>3){verdictClass='neutral';verdictText='Decent — Worth Considering';}else{verdictClass='negative';verdictText='Weak — Reconsider This Investment';}document.getElementById('roi-out').innerHTML='<div class="verdict-display '+verdictClass+'"><div class="verdict-label" style="font-size:20px;">'+verdictText+'</div></div><div class="metrics-grid"><div class="metric-card green-metric"><div class="metric-label">Gross Yield</div><div class="metric-value">'+grossYield+'%</div></div><div class="metric-card blue-metric"><div class="metric-label">Net Yield</div><div class="metric-value">'+netYield+'%</div></div><div class="metric-card purple-metric"><div class="metric-label">Monthly EMI</div><div class="metric-value">₹'+formatNumber(emi)+'</div></div><div class="metric-card '+(monthlyCashFlow>=0?'teal-metric':'red-metric')+'"><div class="metric-label">Cash Flow / Month</div><div class="metric-value">₹'+formatNumber(monthlyCashFlow)+'</div></div><div class="metric-card orange-metric"><div class="metric-label">Annual Income</div><div class="metric-value">₹'+formatNumber(annualRent)+'</div></div><div class="metric-card red-metric"><div class="metric-label">ROI</div><div class="metric-value">'+roiPercent+'%</div></div></div><div class="summary-text-box"><strong>Summary:</strong> A ₹'+formatNumber(price)+' property generating ₹'+formatNumber(rent)+'/month in rent with an EMI of ₹'+formatNumber(emi)+' leaves you with <strong>₹'+formatNumber(monthlyCashFlow)+'</strong> in monthly cash flow.</div>';var resultBox=document.getElementById('roi-res');resultBox.style.display='block';resultBox.classList.add('animate-slide-up');resultBox.scrollIntoView({behavior:'smooth'});}
 
-    function toggleCheckbox(element) { element.classList.toggle('selected'); }
+    function calcReno(){var cityType=document.getElementById('cs-city').getAttribute('data-value'),area=getInputValue('rv-area'),qualityLevel=document.getElementById('cs-ql').getAttribute('data-value');if(!area){alert('Please enter the total area');return;}var cityMultiplier=cityType==='metro'?1.5:cityType==='tier2'?1.0:0.7;var qualityMultiplier=qualityLevel==='budget'?1.0:qualityLevel==='mid'?1.8:3.0;var renovationItems=[{id:'kitchen',name:'Kitchen',baseCost:120000},{id:'bathroom',name:'Bathroom',baseCost:80000},{id:'bedroom',name:'Bedroom',baseCost:60000},{id:'living',name:'Living Room',baseCost:70000},{id:'painting',name:'Painting',baseCost:25*area},{id:'flooring',name:'Flooring',baseCost:80*area},{id:'electrical',name:'Electrical',baseCost:50*area},{id:'plumbing',name:'Plumbing',baseCost:40*area}];var totalCost=0,breakdownHTML='',hasSelection=false,selectedIds=[];document.querySelectorAll('.checkbox-card.selected').forEach(function(card){selectedIds.push(card.getAttribute('data-id'));});renovationItems.forEach(function(item){if(selectedIds.indexOf(item.id)!==-1){hasSelection=true;var itemCost=Math.round(item.baseCost*cityMultiplier*qualityMultiplier);totalCost+=itemCost;breakdownHTML+='<div class="breakdown-line-item"><span>'+item.name+'</span><span class="item-value">₹'+formatNumber(itemCost)+'</span></div>';}});if(!hasSelection){alert('Please select at least one renovation area');return;}var cityLabel=cityType==='metro'?'Metro City':cityType==='tier2'?'Tier 2 City':'Tier 3 City';document.getElementById('reno-out').innerHTML='<div class="verdict-display positive"><div class="verdict-label" style="font-size:20px;">Estimated Total: ₹'+formatNumber(totalCost)+'</div></div>'+breakdownHTML+'<div class="breakdown-total-bar"><span>Total Cost</span><span>₹'+formatNumber(totalCost)+'</span></div><div class="summary-text-box"><strong>Note:</strong> This is an estimated cost for '+qualityLevel+' quality renovation in a '+cityLabel+' for '+area+' sq.ft. Actual costs may vary by ±20% depending on material availability and local labor rates.</div>';var resultBox=document.getElementById('reno-res');resultBox.style.display='block';resultBox.classList.add('animate-slide-up');resultBox.scrollIntoView({behavior:'smooth'});}
 
-    // ===== HELPERS =====
-    function formatNumber(number) { return Math.round(number).toLocaleString('en-IN'); }
-    function getInputValue(inputId) { return Number(document.getElementById(inputId).value) || 0; }
+    function calcTrue(){var price=getInputValue('t-price'),renoCost=getInputValue('t-reno'),legalCost=getInputValue('t-legal'),monthlyRent=getInputValue('t-rent'),monthlyExpenses=getInputValue('t-exp'),appreciationRate=getInputValue('t-appr');if(!price||!monthlyRent){alert('Please enter property price and expected rent');return;}var totalInvestment=price+renoCost+legalCost,monthlyProfit=monthlyRent-monthlyExpenses,annualProfit=monthlyProfit*12;var trueROI=(annualProfit/totalInvestment*100).toFixed(1);var yearlyAppreciation=Math.round(price*appreciationRate/100);var totalAnnualReturn=annualProfit+yearlyAppreciation,combinedROI=(totalAnnualReturn/totalInvestment*100).toFixed(1);var paybackPeriod=(totalInvestment/totalAnnualReturn).toFixed(1);var verdictClass,verdictText;if(combinedROI>8){verdictClass='positive';verdictText='Outstanding TRUE ROI';}else if(combinedROI>5){verdictClass='positive';verdictText='Strong TRUE ROI';}else if(combinedROI>3){verdictClass='neutral';verdictText='Average TRUE ROI';}else{verdictClass='negative';verdictText='Weak — Reconsider This Investment';}document.getElementById('true-out').innerHTML='<div class="verdict-display '+verdictClass+'"><div class="verdict-label" style="font-size:20px;">'+verdictText+'</div></div><div class="metrics-grid"><div class="metric-card purple-metric full-width"><div class="metric-label">Total Investment (TRUE Cost)</div><div class="metric-value" style="font-size:24px;">₹'+formatNumber(totalInvestment)+'</div></div><div class="metric-card green-metric"><div class="metric-label">Monthly Profit</div><div class="metric-value">₹'+formatNumber(monthlyProfit)+'</div></div><div class="metric-card blue-metric"><div class="metric-label">Annual Rent Profit</div><div class="metric-value">₹'+formatNumber(annualProfit)+'</div></div><div class="metric-card orange-metric"><div class="metric-label">Yearly Appreciation</div><div class="metric-value">₹'+formatNumber(yearlyAppreciation)+'</div></div><div class="metric-card teal-metric"><div class="metric-label">Rental ROI</div><div class="metric-value">'+trueROI+'%</div></div><div class="metric-card green-metric full-width"><div class="metric-label">Combined TRUE ROI</div><div class="metric-value" style="font-size:26px;">'+combinedROI+'%</div></div></div><div class="summary-text-box"><strong>Complete Analysis:</strong><br><br>Property: ₹'+formatNumber(price)+' + Renovation: ₹'+formatNumber(renoCost)+' + Legal: ₹'+formatNumber(legalCost)+' = <strong>₹'+formatNumber(totalInvestment)+' Total Investment</strong><br><br>Monthly Profit: ₹'+formatNumber(monthlyProfit)+'<br>Annual Returns (Rent + Appreciation): ₹'+formatNumber(totalAnnualReturn)+'<br><br><strong>Estimated Payback Period: ~'+paybackPeriod+' years</strong></div>';var resultBox=document.getElementById('true-res');resultBox.style.display='block';resultBox.classList.add('animate-slide-up');resultBox.scrollIntoView({behavior:'smooth'});}
 
-    // ===== ROI CALCULATOR =====
-    function calcROI() {
-      var price = getInputValue('r-price'), rent = getInputValue('r-rent'), maintenance = getInputValue('r-maint'), tax = getInputValue('r-tax'), loanAmount = getInputValue('r-loan'), interestRate = getInputValue('r-int'), loanYears = getInputValue('r-yrs');
-      if (!price || !rent) { alert('Please enter property price and expected rent'); return; }
-      var annualRent = rent * 12, annualExpenses = (maintenance * 12) + tax, netIncome = annualRent - annualExpenses;
-      var grossYield = (annualRent / price * 100).toFixed(1), netYield = (netIncome / price * 100).toFixed(1);
-      var emi = 0;
-      if (loanAmount > 0 && interestRate > 0 && loanYears > 0) { var monthlyRate = interestRate / 12 / 100, totalMonths = loanYears * 12; emi = Math.round((loanAmount * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) / (Math.pow(1 + monthlyRate, totalMonths) - 1)); }
-      var monthlyCashFlow = rent - maintenance - (tax / 12) - emi, downPayment = price - loanAmount;
-      var roiPercent = downPayment > 0 ? ((monthlyCashFlow * 12 / downPayment) * 100).toFixed(1) : '0';
-      var verdictClass, verdictText;
-      if (netYield > 5) { verdictClass = 'positive'; verdictText = 'Excellent Investment'; }
-      else if (netYield > 3) { verdictClass = 'neutral'; verdictText = 'Decent — Worth Considering'; }
-      else { verdictClass = 'negative'; verdictText = 'Weak — Reconsider This Investment'; }
-      document.getElementById('roi-out').innerHTML = '<div class="verdict-display ' + verdictClass + '"><div class="verdict-label" style="font-size:20px;">' + verdictText + '</div></div><div class="metrics-grid"><div class="metric-card green-metric"><div class="metric-label">Gross Yield</div><div class="metric-value">' + grossYield + '%</div></div><div class="metric-card blue-metric"><div class="metric-label">Net Yield</div><div class="metric-value">' + netYield + '%</div></div><div class="metric-card purple-metric"><div class="metric-label">Monthly EMI</div><div class="metric-value">₹' + formatNumber(emi) + '</div></div><div class="metric-card ' + (monthlyCashFlow >= 0 ? 'teal-metric' : 'red-metric') + '"><div class="metric-label">Cash Flow / Month</div><div class="metric-value">₹' + formatNumber(monthlyCashFlow) + '</div></div><div class="metric-card orange-metric"><div class="metric-label">Annual Income</div><div class="metric-value">₹' + formatNumber(annualRent) + '</div></div><div class="metric-card red-metric"><div class="metric-label">ROI</div><div class="metric-value">' + roiPercent + '%</div></div></div><div class="summary-text-box"><strong>Summary:</strong> A ₹' + formatNumber(price) + ' property generating ₹' + formatNumber(rent) + '/month in rent with an EMI of ₹' + formatNumber(emi) + ' leaves you with <strong>₹' + formatNumber(monthlyCashFlow) + '</strong> in monthly cash flow.</div>';
-      var resultBox = document.getElementById('roi-res'); resultBox.style.display = 'block'; resultBox.classList.add('animate-slide-up'); resultBox.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // ===== RENOVATION CALCULATOR =====
-    function calcReno() {
-      var cityType = document.getElementById('cs-city').getAttribute('data-value'), area = getInputValue('rv-area'), qualityLevel = document.getElementById('cs-ql').getAttribute('data-value');
-      if (!area) { alert('Please enter the total area'); return; }
-      var cityMultiplier = cityType === 'metro' ? 1.5 : cityType === 'tier2' ? 1.0 : 0.7;
-      var qualityMultiplier = qualityLevel === 'budget' ? 1.0 : qualityLevel === 'mid' ? 1.8 : 3.0;
-      var renovationItems = [{ id: 'kitchen', name: 'Kitchen', baseCost: 120000 }, { id: 'bathroom', name: 'Bathroom', baseCost: 80000 }, { id: 'bedroom', name: 'Bedroom', baseCost: 60000 }, { id: 'living', name: 'Living Room', baseCost: 70000 }, { id: 'painting', name: 'Painting', baseCost: 25 * area }, { id: 'flooring', name: 'Flooring', baseCost: 80 * area }, { id: 'electrical', name: 'Electrical', baseCost: 50 * area }, { id: 'plumbing', name: 'Plumbing', baseCost: 40 * area }];
-      var totalCost = 0, breakdownHTML = '', hasSelection = false, selectedIds = [];
-      document.querySelectorAll('.checkbox-card.selected').forEach(function(card) { selectedIds.push(card.getAttribute('data-id')); });
-      renovationItems.forEach(function(item) {
-        if (selectedIds.indexOf(item.id) !== -1) { hasSelection = true; var itemCost = Math.round(item.baseCost * cityMultiplier * qualityMultiplier); totalCost += itemCost; breakdownHTML += '<div class="breakdown-line-item"><span>' + item.name + '</span><span class="item-value">₹' + formatNumber(itemCost) + '</span></div>'; }
-      });
-      if (!hasSelection) { alert('Please select at least one renovation area'); return; }
-      var cityLabel = cityType === 'metro' ? 'Metro City' : cityType === 'tier2' ? 'Tier 2 City' : 'Tier 3 City';
-      document.getElementById('reno-out').innerHTML = '<div class="verdict-display positive"><div class="verdict-label" style="font-size:20px;">Estimated Total: ₹' + formatNumber(totalCost) + '</div></div>' + breakdownHTML + '<div class="breakdown-total-bar"><span>Total Cost</span><span>₹' + formatNumber(totalCost) + '</span></div><div class="summary-text-box"><strong>Note:</strong> This is an estimated cost for ' + qualityLevel + ' quality renovation in a ' + cityLabel + ' for ' + area + ' sq.ft. Actual costs may vary by ±20% depending on material availability and local labor rates.</div>';
-      var resultBox = document.getElementById('reno-res'); resultBox.style.display = 'block'; resultBox.classList.add('animate-slide-up'); resultBox.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // ===== TRUE ROI CALCULATOR =====
-    function calcTrue() {
-      var price = getInputValue('t-price'), renoCost = getInputValue('t-reno'), legalCost = getInputValue('t-legal'), monthlyRent = getInputValue('t-rent'), monthlyExpenses = getInputValue('t-exp'), appreciationRate = getInputValue('t-appr');
-      if (!price || !monthlyRent) { alert('Please enter property price and expected rent'); return; }
-      var totalInvestment = price + renoCost + legalCost, monthlyProfit = monthlyRent - monthlyExpenses, annualProfit = monthlyProfit * 12;
-      var trueROI = (annualProfit / totalInvestment * 100).toFixed(1);
-      var yearlyAppreciation = Math.round(price * appreciationRate / 100);
-      var totalAnnualReturn = annualProfit + yearlyAppreciation, combinedROI = (totalAnnualReturn / totalInvestment * 100).toFixed(1);
-      var paybackPeriod = (totalInvestment / totalAnnualReturn).toFixed(1);
-      var verdictClass, verdictText;
-      if (combinedROI > 8) { verdictClass = 'positive'; verdictText = 'Outstanding TRUE ROI'; }
-      else if (combinedROI > 5) { verdictClass = 'positive'; verdictText = 'Strong TRUE ROI'; }
-      else if (combinedROI > 3) { verdictClass = 'neutral'; verdictText = 'Average TRUE ROI'; }
-      else { verdictClass = 'negative'; verdictText = 'Weak — Reconsider This Investment'; }
-      document.getElementById('true-out').innerHTML = '<div class="verdict-display ' + verdictClass + '"><div class="verdict-label" style="font-size:20px;">' + verdictText + '</div></div><div class="metrics-grid"><div class="metric-card purple-metric full-width"><div class="metric-label">Total Investment (TRUE Cost)</div><div class="metric-value" style="font-size:24px;">₹' + formatNumber(totalInvestment) + '</div></div><div class="metric-card green-metric"><div class="metric-label">Monthly Profit</div><div class="metric-value">₹' + formatNumber(monthlyProfit) + '</div></div><div class="metric-card blue-metric"><div class="metric-label">Annual Rent Profit</div><div class="metric-value">₹' + formatNumber(annualProfit) + '</div></div><div class="metric-card orange-metric"><div class="metric-label">Yearly Appreciation</div><div class="metric-value">₹' + formatNumber(yearlyAppreciation) + '</div></div><div class="metric-card teal-metric"><div class="metric-label">Rental ROI</div><div class="metric-value">' + trueROI + '%</div></div><div class="metric-card green-metric full-width"><div class="metric-label">Combined TRUE ROI</div><div class="metric-value" style="font-size:26px;">' + combinedROI + '%</div></div></div><div class="summary-text-box"><strong>Complete Analysis:</strong><br><br>Property: ₹' + formatNumber(price) + ' + Renovation: ₹' + formatNumber(renoCost) + ' + Legal: ₹' + formatNumber(legalCost) + ' = <strong>₹' + formatNumber(totalInvestment) + ' Total Investment</strong><br><br>Monthly Profit: ₹' + formatNumber(monthlyProfit) + '<br>Annual Returns (Rent + Appreciation): ₹' + formatNumber(totalAnnualReturn) + '<br><br><strong>Estimated Payback Period: ~' + paybackPeriod + ' years</strong></div>';
-      var resultBox = document.getElementById('true-res'); resultBox.style.display = 'block'; resultBox.classList.add('animate-slide-up'); resultBox.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // ===== EMI CALCULATOR =====
-    function calcEMI() {
-      var loanAmount = getInputValue('e-loan'), interestRate = getInputValue('e-int'), loanYears = getInputValue('e-yrs');
-      if (!loanAmount || !interestRate || !loanYears) { alert('Please fill in all fields'); return; }
-      var monthlyRate = interestRate / 12 / 100, totalMonths = loanYears * 12;
-      var emi = Math.round((loanAmount * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) / (Math.pow(1 + monthlyRate, totalMonths) - 1));
-      var totalPayment = emi * totalMonths, totalInterest = totalPayment - loanAmount;
-      document.getElementById('emi-out').innerHTML = '<div class="verdict-display positive"><div class="verdict-label" style="font-size:22px;">Monthly EMI: ₹' + formatNumber(emi) + '</div></div><div class="metrics-grid"><div class="metric-card purple-metric full-width"><div class="metric-label">Loan Amount</div><div class="metric-value">₹' + formatNumber(loanAmount) + '</div></div><div class="metric-card red-metric"><div class="metric-label">Total Interest</div><div class="metric-value">₹' + formatNumber(totalInterest) + '</div></div><div class="metric-card orange-metric"><div class="metric-label">Total Payment</div><div class="metric-value">₹' + formatNumber(totalPayment) + '</div></div><div class="metric-card green-metric"><div class="metric-label">Monthly EMI</div><div class="metric-value">₹' + formatNumber(emi) + '</div></div><div class="metric-card blue-metric"><div class="metric-label">Tenure</div><div class="metric-value">' + loanYears + ' yrs</div></div></div><div class="summary-text-box"><strong>Summary:</strong> A loan of ₹' + formatNumber(loanAmount) + ' at ' + interestRate + '% interest over ' + loanYears + ' years results in a monthly EMI of ₹' + formatNumber(emi) + '. You will pay ₹' + formatNumber(totalInterest) + ' in total interest over the loan period.</div>';
-      var resultBox = document.getElementById('emi-res'); resultBox.style.display = 'block'; resultBox.classList.add('animate-slide-up'); resultBox.scrollIntoView({ behavior: 'smooth' });
-    }
+    function calcEMI(){var loanAmount=getInputValue('e-loan'),interestRate=getInputValue('e-int'),loanYears=getInputValue('e-yrs');if(!loanAmount||!interestRate||!loanYears){alert('Please fill in all fields');return;}var monthlyRate=interestRate/12/100,totalMonths=loanYears*12;var emi=Math.round((loanAmount*monthlyRate*Math.pow(1+monthlyRate,totalMonths))/(Math.pow(1+monthlyRate,totalMonths)-1));var totalPayment=emi*totalMonths,totalInterest=totalPayment-loanAmount;document.getElementById('emi-out').innerHTML='<div class="verdict-display positive"><div class="verdict-label" style="font-size:22px;">Monthly EMI: ₹'+formatNumber(emi)+'</div></div><div class="metrics-grid"><div class="metric-card purple-metric full-width"><div class="metric-label">Loan Amount</div><div class="metric-value">₹'+formatNumber(loanAmount)+'</div></div><div class="metric-card red-metric"><div class="metric-label">Total Interest</div><div class="metric-value">₹'+formatNumber(totalInterest)+'</div></div><div class="metric-card orange-metric"><div class="metric-label">Total Payment</div><div class="metric-value">₹'+formatNumber(totalPayment)+'</div></div><div class="metric-card green-metric"><div class="metric-label">Monthly EMI</div><div class="metric-value">₹'+formatNumber(emi)+'</div></div><div class="metric-card blue-metric"><div class="metric-label">Tenure</div><div class="metric-value">'+loanYears+' yrs</div></div></div><div class="summary-text-box"><strong>Summary:</strong> A loan of ₹'+formatNumber(loanAmount)+' at '+interestRate+'% interest over '+loanYears+' years results in a monthly EMI of ₹'+formatNumber(emi)+'. You will pay ₹'+formatNumber(totalInterest)+' in total interest over the loan period.</div>';var resultBox=document.getElementById('emi-res');resultBox.style.display='block';resultBox.classList.add('animate-slide-up');resultBox.scrollIntoView({behavior:'smooth'});}
   </script>
 </body>
 </html>
